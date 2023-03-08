@@ -1,6 +1,6 @@
 package br.com.neki.skillList.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -36,7 +36,7 @@ public class UserSkill {
 
     private Integer knowledgeLevel; 
 
-    private Date createdAt; 
+    private LocalDate createdAt; 
 
-    private Date updatedAt; 
+    private LocalDate updatedAt; 
 }
