@@ -7,7 +7,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -65,15 +64,18 @@ public class SecurityConfiguration {
     http.cors().and().csrf().disable().authorizeHttpRequests()
         .requestMatchers(HttpMethod.POST, "/login").permitAll()
         .requestMatchers(HttpMethod.GET, "/skill").permitAll()
-        .requestMatchers(HttpMethod.POST, "/users", "/users/**").permitAll()
-          .requestMatchers("/v2/api-docs").permitAll()
+        .requestMatchers(HttpMethod.GET, "/users/{id}").permitAll()
+        .requestMatchers(HttpMethod.GET, "/users").permitAll()
+        .requestMatchers(HttpMethod.GET, "/userskill").permitAll()
+        .requestMatchers(HttpMethod.POST, "/users").permitAll()
+          .requestMatchers("/v3/api-docs").permitAll()
             .requestMatchers("/configuration/ui").permitAll()
             .requestMatchers("/swagger-resources/**").permitAll()
             .requestMatchers("/configuration/security").permitAll()
             .requestMatchers("/swagger-ui.html").permitAll()
             .requestMatchers("/swagger-ui/*").permitAll()
             .requestMatchers("/webjars/**").permitAll()
-            .requestMatchers("/v2/**").permitAll()
+            .requestMatchers("/v3/**").permitAll()
      
 
         .anyRequest().authenticated()
@@ -88,9 +90,4 @@ public class SecurityConfiguration {
     return http.build();
   }
  
-
-  @Bean
-  public WebSecurityCustomizer webSecurityCustomizer() {
-      return (web) ->  web.ignoring().requestMatchers("/swagger-ui/**", "/bus/v3/api-docs/**");
-  }
 }

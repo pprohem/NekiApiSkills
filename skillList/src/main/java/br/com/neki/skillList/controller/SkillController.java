@@ -21,21 +21,45 @@ import br.com.neki.skillList.dto.SkillDTO.SkillResponseDTO;
 import br.com.neki.skillList.exception.ApiError;
 import br.com.neki.skillList.exception.SkillException;
 import br.com.neki.skillList.service.SkillService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/skill")
+@Tag(name = "Skills", description = "Programming skills")
 public class SkillController {
     @Autowired
     public SkillService skillService;
     
     @GetMapping
+    @Operation(summary = "Get All Skills", description = "Get All", responses = {
+        @ApiResponse(responseCode = "200", description = "Successfully Get all Skills!"
+       ),
+        @ApiResponse(responseCode = "400", ref = "BadRequest"),
+        @ApiResponse(responseCode = "401", ref = "badcredentials"),
+        @ApiResponse(responseCode = "422", ref = "unprocessableEntity"),
+        @ApiResponse(responseCode = "500", ref = "internalServerError")
+})
     public ResponseEntity<List<SkillResponseDTO>> getSkills() {
        return ResponseEntity.ok(skillService.findAll());
     };
 
 
     @PostMapping
+    @SecurityRequirement(name = "token")
+    @Operation(summary = "Post Skill", description = "Post a Skill", responses = {
+        @ApiResponse(responseCode = "200", description = "Successfully Posted Skill!", content = @Content(mediaType = "application/json", 
+        schema = @Schema(implementation = SkillResponseDTO.class))),
+        @ApiResponse(responseCode = "400", ref = "BadRequest"),
+        @ApiResponse(responseCode = "401", ref = "badcredentials"),
+        @ApiResponse(responseCode = "422", ref = "unprocessableEntity"),
+        @ApiResponse(responseCode = "500", ref = "internalServerError")
+})
     public ResponseEntity<Object> createSkill(@Valid @RequestBody SkillRequestDTO skRequest) {
         try {
             SkillResponseDTO response = skillService.registerSkill(skRequest);
@@ -51,6 +75,15 @@ public class SkillController {
 
 
     @PutMapping("{id}")
+    @Operation(summary = "Update Skill", description = "Update a Skill", responses = {
+        @ApiResponse(responseCode = "200", description = "Successfully Update Skill!", content = @Content(mediaType = "application/json", 
+        schema = @Schema(implementation = SkillResponseDTO.class))),
+        @ApiResponse(responseCode = "400", ref = "BadRequest"),
+        @ApiResponse(responseCode = "401", ref = "badcredentials"),
+        @ApiResponse(responseCode = "422", ref = "unprocessableEntity"),
+        @ApiResponse(responseCode = "500", ref = "internalServerError")
+})
+    @SecurityRequirement(name = "token")
     public ResponseEntity<Object> updateSkill(@PathVariable Long id, @Valid @RequestBody SkillRequestDTO skRequest) {
         try {
             SkillResponseDTO response = skillService.updateSkill(id, skRequest);
@@ -70,6 +103,15 @@ public class SkillController {
 
 
     @DeleteMapping("{id}") 
+    @SecurityRequirement(name = "token")
+    @Operation(summary = "Delete Skill", description = "Delete a Skill", responses = {
+        @ApiResponse(responseCode = "200", description = "Successfully Deleted Skill!"
+      ),
+        @ApiResponse(responseCode = "400", ref = "BadRequest"),
+        @ApiResponse(responseCode = "401", ref = "badcredentials"),
+        @ApiResponse(responseCode = "422", ref = "unprocessableEntity"),
+        @ApiResponse(responseCode = "500", ref = "internalServerError")
+})
     public ResponseEntity<Object> deleteSkill(@PathVariable Long id) {
         try {
             skillService.deleteSkill(id);

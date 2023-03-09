@@ -83,12 +83,12 @@ public class OpenApiConfig {
 
                 return new OpenAPI()
                                 .components(components)
-                                .info(new Info().title("Food Service")
+                                .info(new Info().title("NEKI SKILLS")
                                 .version("V0.0.1")
-                                .description("API FoodDelievery")
-                                .contact(new Contact().name("Suporte Food Delievery")
-                                                .email("food@gmail.com"))
+                                .description("Api Spring 3.0, Java 17, JWT")
+                                .contact(new Contact().name("https://www.linkedin.com/in/pprohem/")
+                                                .email("pprg00@gmail.com"))
                                                 .license(new License().name("Apache 2.0").url("https://www.apache.org/licenses/LICENSE-2.0.html")));
         }
-
+      
     }
