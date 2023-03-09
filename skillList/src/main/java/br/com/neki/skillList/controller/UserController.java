@@ -22,7 +22,7 @@ import br.com.neki.skillList.service.UserService;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("users")
 public class UserController {
     
 
@@ -52,12 +52,14 @@ public class UserController {
   @PostMapping
   public ResponseEntity<Object> insert(@Valid @RequestBody UserInsertDTO user) {
     try {
+      System.out.println("passei aqui");
       User userInsert = userService.insert(user);
       URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
           .buildAndExpand(userInsert.getId())
           .toUri();
       return ResponseEntity.created(uri).body(userInsert);
     } catch (UserException e) {
+      System.out.println("passei aqui2");
       return ResponseEntity.unprocessableEntity().body(e.getMessage());
     }
   }

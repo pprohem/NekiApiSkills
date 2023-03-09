@@ -7,11 +7,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import br.com.neki.skillList.service.CustomUserDetailsService;
+
 
 
 @Configuration
@@ -62,24 +64,33 @@ public class SecurityConfiguration {
   protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.cors().and().csrf().disable().authorizeHttpRequests()
         .requestMatchers(HttpMethod.POST, "/login").permitAll()
-        .requestMatchers(HttpMethod.POST, "/**").permitAll()
         .requestMatchers(HttpMethod.GET, "/skill").permitAll()
-        .requestMatchers("/swagger-ui/**").permitAll()
-        .requestMatchers("/swagger-ui.html").permitAll()
-        .requestMatchers("/webjars/**").permitAll()
-        .requestMatchers("/configuration/ui").permitAll()
-        .requestMatchers("/configuration/security").permitAll()
-        .requestMatchers("/v2/**").permitAll()
-        .requestMatchers("/v3/**").permitAll()
-        .requestMatchers("/swagger-resources/**").permitAll()
+        .requestMatchers(HttpMethod.POST, "/users", "/users/**").permitAll()
+          .requestMatchers("/v2/api-docs").permitAll()
+            .requestMatchers("/configuration/ui").permitAll()
+            .requestMatchers("/swagger-resources/**").permitAll()
+            .requestMatchers("/configuration/security").permitAll()
+            .requestMatchers("/swagger-ui.html").permitAll()
+            .requestMatchers("/swagger-ui/*").permitAll()
+            .requestMatchers("/webjars/**").permitAll()
+            .requestMatchers("/v2/**").permitAll()
+     
+
         .anyRequest().authenticated()
         .and()
+        
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     http.headers().frameOptions().disable();
 
     http.apply(MyCustomDsl.customDsl());
 
+    
     return http.build();
   }
+ 
 
+  @Bean
+  public WebSecurityCustomizer webSecurityCustomizer() {
+      return (web) ->  web.ignoring().requestMatchers("/swagger-ui/**", "/bus/v3/api-docs/**");
+  }
 }
