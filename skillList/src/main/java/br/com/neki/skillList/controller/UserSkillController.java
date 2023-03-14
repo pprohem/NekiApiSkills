@@ -94,7 +94,7 @@ public class UserSkillController {
       }
   
     }
-    @PutMapping
+    @PutMapping("{id}")
     @SecurityRequirement(name = "token")
     @Operation(summary = "Update UserSkill", description = "Update a UserSkill", responses = {
       @ApiResponse(responseCode = "200", description = "Successfully Update UserSkill!", content = @Content(mediaType = "application/json", 

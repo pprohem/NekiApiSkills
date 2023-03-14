@@ -68,6 +68,8 @@ public class SecurityConfiguration {
         .requestMatchers(HttpMethod.GET, "/users").permitAll()
         .requestMatchers(HttpMethod.GET, "/userskill").permitAll()
         .requestMatchers(HttpMethod.POST, "/users").permitAll()
+        // .requestMatchers(HttpMethod.POST, "/userskill").permitAll()
+        // .requestMatchers(HttpMethod.DELETE, "/userskill").permitAll()
           .requestMatchers("/v3/api-docs").permitAll()
             .requestMatchers("/configuration/ui").permitAll()
             .requestMatchers("/swagger-resources/**").permitAll()

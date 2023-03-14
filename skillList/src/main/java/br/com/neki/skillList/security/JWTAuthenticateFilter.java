@@ -33,7 +33,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 public class JWTAuthenticateFilter extends UsernamePasswordAuthenticationFilter {
 
-  public static final Date expirationDate = new Date(System.currentTimeMillis() + 900000);
+  public static final Date expirationDate = new Date(System.currentTimeMillis() + 2628000);
 
   public static final String TOKEN_PASSWORD = "b38be612-0681-4ab7-8478-1d04e8127f3d";
 
